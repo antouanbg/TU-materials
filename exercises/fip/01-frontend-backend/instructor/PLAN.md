@@ -1,6 +1,7 @@
 # Упражнение 1 — План за провеждане (за асистента)
 
-**Програмиране за Интернет · 2026/27 · 4 курс бакалаври, зимен семестър · 90 мин**
+**Програмиране за Интернет · 2026/27 · 4 курс бакалаври, зимен семестър · 90 мин · вторник, 1211, блок 1 и 2, подгрупи a/b през седмица**
+За първия час: [FIRST-SESSION.md](FIRST-SESSION.md) (подготовка, ход по минути, Teams шаблон, присъствен лист). Източник за setup/лимити: [webdev-course.tu-sofia.workers.dev](https://webdev-course.tu-sofia.workers.dev/bg/guides/setup/).
 Студентски шаблон: `antouanbg/fip-course-template` (→ студентът прави `fip-<ФН>`) · Решение: `instructor/solution/index.html`
 
 ## Какво е взето от магистърския шаблон (MrKotov/webdev-course-template) и какво е опростено
@@ -8,7 +9,7 @@
 | Магистри (webdev-course-template) | Бакалаври 4 курс (fip-course-template) | Защо |
 |---|---|---|
 | **Упр. 1: ръчно написан MCP сървър** (JSON-RPC по stdio, 2 tools, `check.mjs`, description experiment) | **Упр. 1: HTML страница + `fetch()` към JSON API** — Част A на ръка, Част B с агент, `checks/ex1.mjs`, *prompt experiment* | MCP предполага лекции 1–2 за агенти; бакалавърският конспект (Наков) тръгва от HTTP/HTML/JS. Запазени са същите умения: протокол + JSON, „грешка в данните" vs „грешка в протокола" (тук: `response.ok` vs network error), агентът като reviewer, експеримент с формулировката. |
-| Codespaces + Gemini CLI | Codespaces + **Copilot Chat** по подразбиране (без допълнителен вход), Gemini CLI и уеб чат като алтернативи | По-малко setup в първия час |
+| Codespaces + Gemini CLI | Codespaces + **Gemini CLI** (≈1000 заявки/ден безплатно), Copilot Chat и уеб чат като алтернативи | Същият агент като при магистрите; Copilot Free е само ≈50 заявки/месец |
 | devcontainer: Python + Node + Docker + SQLite | Node 22 + GitHub CLI + Live Server | Упр. 1–2 ползват само Node; Docker/DB се добавят в Упр. 3–4 |
 | `AGENTS.md`, `AGENT_LOG.md`, `USAGE.md`, `SPEC.md`, `CLAUDE.md` | същите; `AGENTS.md` е предварително попълнен за Упр. 1; `USAGE.md` приема брой prompt-ове, ако инструментът не показва токени | Навикът се изгражда от първия ден |
 | Self-check по упражнение, `git tag exN` за предаване, CI при push | същото (`checks/ex1.mjs`, `tag ex1`, CI само Node) | |
@@ -18,7 +19,7 @@
 
 | Мин | Блок | Какво прави асистентът |
 |---|---|---|
-| 0–15 | Setup | Use this template → `fip-<ФН>` → Collaborator → Codespace (стартира 2–4 мин: пуснете го **първо**, обяснявайте докато зарежда). Copilot Chat се отваря от иконата вдясно. **Съвет:** пратете README-то по Teams ден по-рано с молба codespace-ът да е създаден. |
+| 0–15 | Setup | Use this template → `fip-<ФН>` → Collaborator → Codespace (стартира 2–4 мин: пуснете го **първо**, обяснявайте докато зарежда). Агент: `gemini` в терминала (вход с Google, кодът се поставя обратно). **Съвет:** пратете README-то по Teams ден по-рано с молба акаунтите да са готови. |
 | 15–25 | Въведение | 5 мин: frontend/backend/DB върху `ex1/index.html`; `fetch`, Promise, JSON. 5 мин: `PROMPTS.md` — роли, контролни точки, чеклист, `AGENT_LOG.md`. Правило: „не можеш да обясниш → не предаваш". |
 | 25–35 | Част A | На ръка, без агент. При A4 минете по залата — всеки показва заявката в Network. |
 | 35–65 | Част B | С агент. Ключов момент **B2**: контролната точка е *преди* приемане на кода — тестват трите сценария. Повечето агентски решения нямат `response.ok`. |
