@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Frontend ↔ Backend Demo — Reference Solution (A + B1–B4)</title>
+  <style>
+    body    { font-family: system-ui, sans-serif; max-width: 720px; margin: 40px auto; padding: 0 16px; }
+    button  { padding: 8px 14px; cursor: pointer; }
+    input   { padding: 8px; width: 60%; }
+    #joke, #results { margin-top: 20px; padding: 12px; border: 1px dashed #888; min-height: 2em; }
+    .error  { border-color: #c00; color: #c00; }
+    footer  { margin-top: 40px; color: #666; font-size: 0.9em; }
+    section { margin-bottom: 32px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Frontend ↔ Backend Demo — Име Фамилия, ФН 121221xxx</h1>   <!-- A1 -->
+  </header>
+
+  <main>
+    <section>
+      <p>The browser (frontend) sends an HTTP GET request to a public API (backend) and renders the JSON it receives.</p>
+      <button id="btn">Get Joke</button>
+      <article id="joke"></article>
+
+      <h3>Last 5 jokes</h3>                                             <!-- B3 -->
+      <ul id="history"></ul>
+
+      <img src="https://picsum.photos/200" alt="Random picture" width="200">   <!-- A2 -->
+      <p>API docs: <a href="https://api.chucknorris.io" target="_blank" rel="noopener">api.chucknorris.io</a></p>
+    </section>
+
+    <section>                                                           <!-- B4 -->
+      <h2>Search jokes</h2>
+      <input id="q" placeholder="min 3 characters, e.g. computer">
+      <button id="searchBtn">Search</button>
+      <div id="results"></div>
+    </section>
+  </main>
+
+  <footer>© <span id="year"></span> — Програмиране за Интернет, ТУ-София</footer>   <!-- A3 -->
+
+  <script>
+    /*
+     * A4 — DevTools → Network (пример какво се очаква да запишат):
+     *   GET https://api.chucknorris.io/jokes/random → 200 OK
+     *   Content-Type: application/json;charset=UTF-8, ~300 B, ~80 ms
+     *
+     * B1 — Обяснение със свои думи (пример):
+     *   fetch() връща Promise за Response обект — само заглавията, тялото още не е прочетено.
+     *   Първият await чака сървърът да отговори; вторият (response.json()) чака тялото
+     *   да се изтегли и парсва текста като JSON → JS обект. При клик: показваме
+     *   "Loading…", пращаме GET, четем JSON, показваме полето value.
+     */
+
+    const RANDOM_URL = "https://api.chucknorris.io/jokes/random";
+    const SEARCH_URL = "https://api.chucknorris.io/jokes/search?query=";
+    const MAX_HISTORY = 5;
+
+    const out     = document.getElementById("joke");
+    const btn     = document.getElementById("btn");
+    const history = document.getElementById("history");
+    const q       = document.getElementById("q");
+    const search  = document.getElementById("searchBtn");
+    const results = document.getElementById("results");
+
+    document.getElementById("year").textContent = new Date().getFullYear();   // A3
+
+    // Общ помощник: GET + проверка на HTTP статуса + JSON.
+    // fetch() отхвърля Promise-а САМО при мрежова грешка (DNS, offline, CORS).
+    // При 404/500 Promise-ът се resolve-ва с response.ok === false → проверяваме ръчно.
+    async function getJSON(url) {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status} ${response.statusText}`);
+      }
+      return response.json();
+    }
+
+    function showError(el, err) {
+      el.classList.add("error");
+      el.textContent = `Error: ${err.message}. Try again.`;
+    }
+
+    // B2 + B3
+    btn.addEventListener("click", async () => {
+      btn.disabled = true;
+      out.classList.remove("error");
+      out.textContent = "Loading...";
+      try {
+        const data = await getJSON(RANDOM_URL);
+        out.textContent = data.value;
+
+        const li = document.createElement("li");
+        li.textContent = data.value;
+        history.prepend(li);                                   // най-новата отгоре
+        while (history.children.length > MAX_HISTORY) history.lastElementChild.remove();
+      } catch (err) {
+        // тук влизат: TypeError "Failed to fetch" (мрежа) и нашият Error("HTTP 404 …")
+        showError(out, err);
+      } finally {
+        btn.disabled = false;                                  // винаги, дори при грешка
+      }
+    });
+
+    // B4
+    search.addEventListener("click", async () => {
+      const term = q.value.trim();
+      results.classList.remove("error");
+      if (term.length < 3) {
+        results.textContent = "Enter at least 3 characters.";  // API-то връща 400 при < 3
+        return;
+      }
+      search.disabled = true;
+      results.textContent = "Searching...";
+      try {
+        // encodeURIComponent: "c++ & rust" → "c%2B%2B%20%26%20rust" — иначе & и + чупят query string-а
+        const data = await getJSON(SEARCH_URL + encodeURIComponent(term));
+        if (data.total === 0) {
+          results.textContent = `No jokes found for "${term}".`;
+          return;
+        }
+        results.innerHTML = "";
+        const h = document.createElement("p");
+        h.textContent = `Found ${data.total} joke(s):`;
+        const ul = document.createElement("ul");
+        for (const joke of data.result) {
+          const li = document.createElement("li");
+          li.textContent = joke.value;                          // textContent, не innerHTML → без XSS
+          ul.append(li);
+        }
+        results.append(h, ul);
+      } catch (err) {
+        showError(results, err);
+      } finally {
+        search.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
