@@ -1,6 +1,7 @@
 # Упражнение 1 — План за провеждане (за асистента)
 
 **Програмиране за Интернет · 2026/27 · 4 курс бакалаври, зимен семестър · 90 мин · вторник, 1211, блок 1 и 2, подгрупи a/b през седмица**
+Чат за упражненията: Teams → **FIP - 2026** → канал **Общи** ([линк](https://teams.microsoft.com/l/channel/19%3AkfumgcmSL2vqXcB5WND0O7OA9M1cUuBhOEgB0phxy_s1%40thread.tacv2/%D0%9E%D0%B1%D1%89%D0%B8?groupId=d496001c-3670-49ea-a776-607c5196f3f2&tenantId=7feeb5c0-34f4-4a4b-8cc0-e59f06920156)).
 За първия час: [FIRST-SESSION.md](FIRST-SESSION.md) (подготовка, ход по минути, Teams шаблон, присъствен лист). Източник за setup/лимити: [webdev-course.tu-sofia.workers.dev](https://webdev-course.tu-sofia.workers.dev/bg/guides/setup/).
 Студентски шаблон: `antouanbg/fip-course-template` (→ студентът прави `fip-<ФН>`) · Решение: `instructor/solution/index.html`
 
